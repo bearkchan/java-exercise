@@ -2,6 +2,9 @@ package com.bk.object;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Scanner;
+import java.util.Vector;
+
 public class WrapperTest {
 
 
@@ -81,5 +84,61 @@ public class WrapperTest {
         Integer i3 = 128;
         Integer j3 = 128;
         System.out.println("i3==j3: " + (i3 == j3)); // false
+    }
+
+
+    /**
+     * 利用Vector代替数组处理：从键盘读入学生成绩（以负数代表输入结束），找出 最高分，并输出学生成绩等级。
+     *  提示：数组一旦创建，长度就固定不变，所以在创建数组前就需要知道它的 长度。而向量类java.util.Vector可以根据需要动态伸缩。
+     *  创建Vector对象：Vector v=new Vector();
+     *  给向量添加元素：v.addElement(Object obj); //obj必须是对象
+     *  取出向量中的元素：Object obj=v.elementAt(0);
+     * 注意第一个元素的下标是0，返回值是Object类型的。
+     * 计算向量的长度：v.size();
+     * 若与最高分相差10分内：A等；20分内：B等；30分内：C等；其它：D等
+     */
+    @Test
+    void scoreTest() {
+        // 1. 创建scanner对象
+        Scanner scanner = new Scanner(System.in);
+        Vector<Integer> vector = new Vector<>();
+        // 2. for(;;)循环获取成绩输入
+        int maxScore = 0;
+        for (;;){
+            System.out.println("请输入学生成绩（负数代表结束）");
+            int score = scanner.nextInt();
+            // 2.1 如果为负数，则跳出循环
+            if (score<0){
+                break;
+            }
+            // 2.2 如果RR分数大于100分，则重新输入成绩
+            if (score>100){
+                System.out.println("成绩输入错误，请重新输入（0-100）");
+                continue;
+            }
+            // 3. 获取最大成绩
+            if (maxScore<score){
+                maxScore = score;
+            }
+
+            // 添加到vector数组中
+            vector.addElement(score);
+        }
+        // 4. 循环遍历数组，判断等级并输出
+        char level;
+        for (int i = 0; i < vector.size(); i++) {
+            Integer score = vector.elementAt(i);
+            int gapScore = maxScore-score;
+            if (gapScore<10){
+                level = 'A';
+            }else if (gapScore<20){
+                level = 'B';
+            }else if (gapScore<30){
+                level = 'C';
+            }else{
+                level = 'D';
+            }
+            System.out.println("Student-"+(i+1)+" : score is "+score+" ; level is "+level);
+        }
     }
 }
