@@ -1,6 +1,6 @@
 package com.bk.team.domain;
 
-public class Printer implements Equipment{
+public class Printer implements Equipment {
     private String name;
 
     /**
@@ -31,7 +31,7 @@ public class Printer implements Equipment{
 
     @Override
     public String getDescription() {
-        return "机器名称："+name+", 机器类型: "+ type;
+        return name + "(" + type + ")";
 
     }
 }

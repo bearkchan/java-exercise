@@ -1,6 +1,6 @@
 package com.bk.team.domain;
 
-public class NoteBook implements Equipment{
+public class NoteBook implements Equipment {
     /**
      * 机器的型号
      */
@@ -30,6 +30,6 @@ public class NoteBook implements Equipment{
 
     @Override
     public String getDescription() {
-        return "机器型号："+model+", 价格为 "+ price;
+        return model + "(" + price + ")";
     }
 }

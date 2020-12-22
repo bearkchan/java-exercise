@@ -5,8 +5,6 @@ import com.bk.team.domain.Designer;
 import com.bk.team.domain.Employee;
 import com.bk.team.domain.Programmer;
 
-import java.lang.reflect.Array;
-import java.time.temporal.Temporal;
 import java.util.Arrays;
 
 public class TeamService {
@@ -42,10 +40,15 @@ public class TeamService {
     public void addMember(Employee employee) throws TeamException {
         if (total >= MAX_MEMBER) {
             throw new TeamException("成员已满，无法添加");
-        } else if (!(employee instanceof Programmer)) {
+        }
+        if (!(employee instanceof Programmer)) {
             throw new TeamException("该成员不是开发人员，无法添加");
         }
         Programmer programmer = (Programmer) employee;
+
+        if (isExist(programmer)) {
+            throw new TeamException("该员工已在本团队中");
+        }
         if (programmer.getStatus().getNAME().equals(Status.BUSY)) {
             throw new TeamException("该员工已是某团队成员");
         } else if (programmer.getStatus().getNAME().equals(Status.VOCATION)) {
@@ -54,28 +57,43 @@ public class TeamService {
         }
 
 
-        int programCount = 0, designerCount = 0, architectCount = 0;
-        Programmer[] programmers = Arrays.copyOf(team, team.length);
-        programmers[total] = programmer;
-        for (int i = 0; i < programmers.length; i++) {
-            if (programmers[i].getClass().getName().equals(Programmer.class.getName())) {
-                programCount += 1;
-            } else if (programmers[i].getClass().getName().equals(Designer.class.getName())) {
-                designerCount += 1;
-            } else if (programmers[i].getClass().getName().equals(Architect.class.getName())) {
-                architectCount += 1;
+        int numOfArch = 0, numOfDsgn = 0, numOfPrg = 0;
+        for (int i = 0; i < total; i++) {
+            if (team[i] instanceof Architect) {
+                numOfArch++;
+            } else if (team[i] instanceof Designer) {
+                numOfDsgn++;
+            } else if (team[i] instanceof Programmer) {
+                numOfPrg++;
             }
         }
-        if (programCount > 3) {
-            throw new TeamException("团队中至多只能有三名程序员");
-        } else if (designerCount > 2) {
-            throw new TeamException("团队中至多只能有两名设计师");
-        } else if (architectCount > 1) {
-            throw new TeamException("团队中至多只能有一名架构师");
+
+        if (programmer instanceof Architect) {
+            if (numOfArch >= 1) {
+                throw new TeamException("团队中至多只能有一名架构师");
+            }
+        } else if (programmer instanceof Designer) {
+            if (numOfDsgn >= 2) {
+                throw new TeamException("团队中至多只能有两名设计师");
+            }
+        } else if (programmer instanceof Programmer) {
+            if (numOfPrg >= 3) {
+                throw new TeamException("团队中至多只能有三名程序员");
+            }
         }
 
         programmer.setMemberId(counter++);
-        team[total] = programmer;
+        programmer.setStatus(Status.BUSY);
+        team[total++] = programmer;
+    }
+
+    private boolean isExist(Programmer programmer) {
+        for (int i = 0; i < total; i++) {
+            if (team[i].getId() == programmer.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void removeMember(int memberid) throws TeamException {
@@ -87,11 +105,11 @@ public class TeamService {
         }
         if (index < 0) {
             throw new TeamException("找不到指定memberId的员工，删除失败");
-        } else {
-            for (int i = index; i < team.length - 1; i++) {
-                team[i] = team[i + 1];
-            }
-            team[team.length - 1] = null;
         }
+        for (int i = index; i < total - 1; i++) {
+            team[i] = team[i + 1];
+        }
+        team[--total] = null;
+
     }
 }

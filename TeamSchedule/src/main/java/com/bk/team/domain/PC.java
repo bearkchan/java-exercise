@@ -34,7 +34,7 @@ public class PC implements Equipment{
 
     @Override
     public String getDescription() {
-        return "机器型号："+model+", 显示器名称: "+ display;
+        return model+"("+ display+")";
 
     }
 }

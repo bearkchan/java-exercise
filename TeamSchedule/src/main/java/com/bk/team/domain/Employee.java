@@ -45,13 +45,13 @@ public class Employee {
         this.salary = salary;
     }
 
+
+    protected String getDetails() {
+        return id + "\t" + name + "\t" + age+ "\t" +salary;
+    }
+
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", salary=" + salary +
-                '}';
+        return getDetails();
     }
 }
