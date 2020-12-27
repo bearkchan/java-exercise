@@ -13,6 +13,8 @@ public class ThreadTest {
                 }
             }
         }.start();
+
+
         // 获取100以内的偶数
         new Thread("偶数线程") {
             @Override
