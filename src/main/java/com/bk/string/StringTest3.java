@@ -61,14 +61,22 @@ public class StringTest3 {
     void test03() {
         int count = 0;
         String str = "abkkcadkabkebfkabkskab";
-        while (true) {
-            int nextIndex = str.indexOf("ab");
-            if (nextIndex < 0) {
-                break;
-            }
+        String searchStr = "ab";
+        int nextIndex = 0;
+        //while (true) {
+        //    int nextIndex = str.indexOf("ab");
+        //    if (nextIndex < 0) {
+        //        break;
+        //    }
+        //    count += 1;
+        //    // 要记得加上查询的字符的长度
+        //    str = str.substring(nextIndex + "ab".length());
+        //}
+
+        // 方式2
+        while ((nextIndex = str.indexOf(searchStr, nextIndex)) != -1) {
             count += 1;
-            // 要记得加上查询的字符的长度
-            str = str.substring(nextIndex + "ab".length());
+            nextIndex += searchStr.length();
         }
         System.out.println("count = " + count);
     }
