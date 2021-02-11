@@ -2,10 +2,7 @@ package com.bk.io;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Create by bear
@@ -105,4 +102,6 @@ public class FileReadWriterTest {
             }
         }
     }
+
+
 }
