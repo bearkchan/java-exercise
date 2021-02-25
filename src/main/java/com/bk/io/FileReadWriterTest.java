@@ -20,9 +20,17 @@ public class FileReadWriterTest {
             fr = new FileReader(file);
 
             // 3. 读取文件流
-            int data;
-            while ((data = fr.read()) != -1) {
-                System.out.print((char) data);
+            // 方式一：一个字符一个字符读取
+            //int data;
+            //while ((data = fr.read()) != -1) {
+            //    System.out.print((char) data);
+            //}
+
+            // 方式二：一次型读取多个字符
+            char[] buffer = new char[5];
+            int len;
+            while ((len = fr.read(buffer)) != -1) {
+                String output = new String(buffer, 0, len);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,7 +48,7 @@ public class FileReadWriterTest {
     }
 
     @Test
-    void testFileReader2() {
+    void testFileWriter() {
         File file = new File("hello1.txt");
         FileWriter fw = null;
         try {
